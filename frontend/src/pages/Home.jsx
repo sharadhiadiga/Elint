@@ -180,7 +180,6 @@ const Home = () => {
           <div className="flex items-center gap-3 text-sm">
             <span className="text-slate-600">Customer Support:</span>
             <span className="font-medium text-slate-800">📞 +91-6364444752</span>
-            <span className="font-medium text-slate-800">+91-9333911911</span>
             <button className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-md">🎧 Get Instant Online Support</button>
             <button 
               onClick={handleLogout}
