@@ -46,7 +46,7 @@ function App() {
     };
   }, []);
 
-  return (
+  return ( 
     <Router>
       <Routes>
         {/* Protected Home Page */}
