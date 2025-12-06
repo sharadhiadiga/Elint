@@ -8,6 +8,8 @@ import Purchase from "./pages/Purchase.jsx";
 import PurchaseBill from "./pages/PurchaseBill.jsx";
 import PartiesPage from "./pages/Parties.jsx";
 import Settings from "./pages/Settings.jsx";
+import OrderDashboard from "./pages/OrderDashboard.jsx";
+import CreateOrder from "./pages/CreateOrder.jsx"; // Import the new page
 import ManageTeams from "./pages/ManageTeams.jsx";
 
 function App() {
@@ -100,6 +102,7 @@ function App() {
             isAuthenticated ? <Navigate to={getDefaultRoute()} replace /> : <Login />
           }
         />
+        
 
         {/* Items Page */}
         <Route
@@ -148,9 +151,22 @@ function App() {
             isAuthenticated ? <Settings /> : <Navigate to="/login" replace />
           }
         />
+        {/* Order Dashboard */}
+        <Route 
+          path="/orders" 
+          element={isAuthenticated ? <OrderDashboard /> : <Navigate to="/login" />} 
+        />
+        
+        {/* Create Order Page - NEW ROUTE */}
+        <Route 
+          path="/orders/new" 
+          element={isAuthenticated ? <CreateOrder /> : <Navigate to="/login" />} 
+        />
 
         {/* Fallback Route */}
         <Route path="*" element={<Navigate to="/" replace />} />
+        
+        
       </Routes>
     </Router>
   );

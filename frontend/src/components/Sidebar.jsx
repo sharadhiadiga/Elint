@@ -1,5 +1,26 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { 
+  LuLayoutDashboard, 
+  LuUsers, 
+  LuBox, 
+  LuFileText, 
+  LuShoppingCart, 
+  LuReceipt, 
+  LuBanknote, 
+  LuClipboardList, 
+  LuUndo2, 
+  LuZap, 
+  LuCreditCard, 
+  LuLandmark, 
+  LuStore, 
+  LuChartBar, // ✅ Corrected from LuBarChart
+  LuWrench, 
+  LuSettings, 
+  LuLogOut, 
+  LuSearch,
+  LuChevronRight
+} from "react-icons/lu";
 import { hasPermission } from '../utils/permissions';
 
 const Sidebar = () => {
@@ -30,7 +51,6 @@ const Sidebar = () => {
     }
   };
 
-  // Read stored user details
   const stored = (() => {
     try {
       return JSON.parse(localStorage.getItem('user')) || {};
@@ -38,10 +58,10 @@ const Sidebar = () => {
       return {};
     }
   })();
-  const displayName = stored.name || stored.email || 'Asd';
-  const initial = (displayName || 'A').toString().trim().charAt(0).toUpperCase();
+  const displayName = stored.name || stored.email || 'User';
+  const initial = (displayName || 'U').toString().trim().charAt(0).toUpperCase();
   const userRole = stored.role || 'user';
-  const profilePhoto = stored.profilePhoto || '';
+
 
   // Define all menu items with permission-based access
   const allMenuItems = [
@@ -127,16 +147,23 @@ const Sidebar = () => {
   }).filter(item => item !== null);
 
   return (
-    <div className="w-64 bg-slate-800 text-white h-screen flex flex-col overflow-y-auto fixed left-0 top-0">
+    <div className="w-64 bg-slate-800 text-gray-300 h-screen flex flex-col fixed left-0 top-0 border-r border-slate-700 z-50">
+      
       {/* Header */}
-      <div className="p-4 border-b border-white/10">
-        <div className="flex items-center gap-2 mb-3">
-          <span className="text-2xl">🔥</span>
-          <span className="text-xl font-bold text-orange-500">Elints</span>
+      <div className="p-4 border-b border-slate-700 bg-slate-800">
+        <div className="flex items-center gap-3 mb-4 px-1">
+          <span className="text-2xl"></span>
+          <span className="text-xl font-bold text-white tracking-tight">Elints</span>
         </div>
-        <button className="w-full bg-white/10 hover:bg-white/20 text-white text-xs rounded px-2 py-2">
-          Open Anything (Ctrl+F)
-        </button>
+        
+        <div className="relative group">
+          <LuSearch className="absolute left-3 top-2.5 text-slate-400" size={14} />
+          <input 
+            type="text" 
+            placeholder="Search (Ctrl+K)" 
+            className="w-full bg-slate-700 text-slate-200 text-xs rounded px-3 pl-9 py-2 border border-slate-600 focus:border-blue-500 focus:outline-none transition-colors placeholder:text-slate-400"
+          />
+        </div>
       </div>
 
       {/* Navigation Menu */}
@@ -253,48 +280,48 @@ const Sidebar = () => {
             <Link
               key={item.path}
               to={item.path}
-              className={`flex items-center relative py-3 cursor-pointer transition-colors ${
-                isActive ? 'bg-orange-500/20 text-white' : 'text-gray-300 hover:bg-white/10'
-              } ${item.indent ? 'pl-12' : 'pl-5'}`}
+              className={`
+                flex items-center px-5 py-2.5 cursor-pointer transition-colors relative
+                ${isActive 
+                  ? 'bg-blue-600/10 text-blue-400 border-l-4 border-blue-500' 
+                  : 'hover:bg-slate-700/50 text-slate-300 border-l-4 border-transparent'
+                }
+                ${item.indent ? 'pl-10 text-sm' : ''}
+              `}
             >
-              {/* Active indicator bar */}
-              {isActive && (
-                <div className="absolute left-0 w-1 h-8 bg-orange-500 rounded-r-full"></div>
-              )}
+              <span className={`
+                mr-3 text-lg
+                ${isActive ? 'text-blue-400' : 'text-slate-400'}
+                ${item.indent ? 'text-base' : ''}
+              `}>
+                {item.icon}
+              </span>
               
-              <span className="mr-3 text-lg">{item.icon}</span>
-              <span className="flex-1 text-sm">{item.label}</span>
+              <span className="flex-1 truncate font-medium text-sm">{item.label}</span>
             </Link>
           );
         })}
       </nav>
 
-      {/* User Profile & Logout */}
-      <div className="p-4 border-t border-white/10 mt-auto">
-        <Link to="/settings" className="bg-white/10 hover:bg-white/20 rounded-lg px-3 py-2 cursor-pointer transition-colors mb-2 block">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              {profilePhoto ? (
-                <img
-                  src={profilePhoto}
-                  alt={displayName}
-                  className="w-8 h-8 rounded-full object-cover border border-white/20"
-                />
-              ) : (
-                <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white font-semibold">
-                  {initial}
-                </div>
-              )}
-              <span className="flex-1 ml-2 text-sm font-medium">{displayName}</span>
-              <span className="text-white/60 text-lg">›</span>
-            </div>
+      {/* Footer / User Profile */}
+      <div className="p-4 border-t border-slate-700 bg-slate-800">
+        <div className="bg-slate-700/30 rounded-md p-2 mb-2 flex items-center gap-3 cursor-pointer hover:bg-slate-700/50 transition-colors">
+          <div className="w-8 h-8 rounded bg-orange-500 flex items-center justify-center text-white font-bold text-sm shadow-sm">
+            {initial}
           </div>
-        </Link>
+          <div className="flex-1 overflow-hidden">
+            <p className="text-sm font-medium text-white truncate">{displayName}</p>
+            <p className="text-xs text-slate-400 capitalize truncate">{userRole}</p>
+          </div>
+          <LuChevronRight className="text-slate-500" size={16} />
+        </div>
+        
         <button 
           onClick={handleLogout}
-          className="w-full bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-2 rounded-md flex items-center justify-center gap-2 transition-colors"
+          className="w-full flex items-center justify-center gap-2 text-xs font-medium text-slate-400 hover:text-red-400 py-2 hover:bg-red-500/10 rounded transition-colors"
         >
-          <span>Logout</span>
+          <LuLogOut size={14} />
+          <span>Sign Out</span>
         </button>
       </div>
     </div>
